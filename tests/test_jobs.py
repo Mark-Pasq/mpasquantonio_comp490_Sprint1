@@ -30,3 +30,15 @@ def test_num_of_jobs():
         response = requests.get(url).json()
         count += len(response)
     assert count >= 100
+
+
+def check_entry_in_dict(names=None):
+    # response = requests.get(url).json()
+    names.append({'company': 'DevsData', 'location': 'Oslo, Norway', 'type': 'Full Time'})
+    names.append({'company': 'Analytics Fire', 'location': 'Remote', 'type': 'Full Time'})
+    names.append({'company': 'Constructive', 'location': 'New York City', 'type': 'Full Time'})
+
+    if not any(d['company'] == 'Constructive' and d['location'] == 'New York City' for d in names):
+        print('Not exists!')
+    else:
+        print('Exists!')

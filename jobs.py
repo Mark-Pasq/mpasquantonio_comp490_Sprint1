@@ -6,24 +6,28 @@
 # Filename: jobs.py
 
 import json
-import requests as req
+from datetime import time
+from typing import List, Dict
+import requests
 
 
-def get_jobs(url=None):
-    # The get() function requests the web to give some data that the user is 
-    # looking for, ie an api.
-    response = req.get(url)
-
-    # Print statement that will send out a request of the response from 
-    # a web server, and if good, will respond with 200.
-    print(response.status_code)
-
-    # The loads() function takes the json data and converts it to a string.
-    python_obj = response.json()
-
-    # This print line will will format the json data into dictionaries that 
-    # are easily manageable.
-    print(json.dumps(python_obj, sort_keys=False, indent=4))
+def get_github_jobs_data() -> List[Dict]:
+    """retrieve github jobs data in form of a list of dictionaries after json processing"""
+    all_data = []
+    page = 1
+    more_data = True
+    while more_data:
+        url = f'https://jobs.github.com/positions.json?page={page}'
+        raw_data = requests.get(url)
+        if "GitHubber!" in raw_data:  # sometimes if I ask for pages too quickly I get an error; only happens in testing
+            continue  # trying continue, but might want break
+        partial_jobs_list = raw_data.json()
+        all_data.extend(partial_jobs_list)
+        if len(partial_jobs_list) < 50:
+            more_data = False
+        time.sleep(.1)  # short sleep between requests so I dont wear out my welcome.
+        page += 1
+    return all_data
 
     save_my_data(python_obj)
 
