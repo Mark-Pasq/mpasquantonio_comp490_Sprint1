@@ -6,7 +6,7 @@
 # Filename: jobs.py
 
 import sqlite3
-
+import jobs
 from typing import Tuple
 
 
@@ -44,15 +44,29 @@ def populate_table(cursor, data):
                                                                      listing['title'], listing['description']))
 
 
+# def get_number_of_rows():
+#     conn = sqlite3.connect('github_jobs_DB.db')
+#     cursor = conn.cursor()
+#     cursor.execute("BEGIN")  # start transaction
+#     n = cursor.execute("SELECT COUNT() FROM GitJobs").fetchone()[0]
+#     # if n > big: be_prepared()
+#     cursor.execute("SELECT * FROM GitJobs").fetchall()
+#     cursor.connection.commit()  # end transaction
+#     # assert n == len(all_rows)
+#     print(n)
+
+
 def close_db(connection: sqlite3.Connection):
     connection.commit()  # make sure any changes get saved
     connection.close()
 
 
 def main():
+    data = jobs.get_github_jobs_data()
     conn, cursor = open_db('Github_Jobs_DB.db')
     create_a_database()
     populate_table(cursor, data)
+    print(type(conn))
     close_db(sqlite3.Connection)
 
     if __name__ == '__main__':

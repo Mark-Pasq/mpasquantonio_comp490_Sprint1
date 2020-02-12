@@ -5,7 +5,7 @@
 # Project1 Agile Sprint1 
 # Filename: jobs.py
 
-import json
+
 from datetime import time
 from typing import List, Dict
 import requests
@@ -29,24 +29,22 @@ def get_github_jobs_data() -> List[Dict]:
         page += 1
     return all_data
 
-    save_my_data(python_obj)
 
-
-def save_my_data(python_obj):
+def save_data(data, filename='data.txt'):
     # This function creates a text file, writes the json data to the file, and
     # saves the data back to the text file.
-    with open('jobs.txt', 'w') as f:
-        f.write(json.dumps(python_obj, sort_keys=False, indent=4))
-    f.close()
+    with open(filename, 'w', encoding='utf-8') as file:
+        for item in data:
+            print(item, file=file)
 
 
 # Main() includes a for loop that will iterate through the multiple pages of
 # the json file.
 def main():
-    for i in range(1, 6):
-        url = f'https://jobs.github.com/positions.json?page={i}'
-        get_jobs(url)
+    # for i in range(1, 6):
+    get_github_jobs_data()
+    #     url = f'https://jobs.github.com/positions.json?page={i}'
+    #     get_jobs(url)
 
-
-if __name__ == '__main__':
-    main()
+    if __name__ == '__main__':
+        main()
